@@ -1,4 +1,4 @@
-# httpstat $$
+# httpstat
 
 curl statistics made simple.
 
