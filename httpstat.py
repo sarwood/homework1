@@ -59,6 +59,15 @@ http_template = """
                                                                  total:{b0004}
 """[1:]
 
+website_template = b"""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homework 1 - HTTPSTAT</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+"""[1:]
 
 ISATTY = sys.stdout.isatty()
 
@@ -145,11 +154,11 @@ def main():
     headerf.close()
 
     # tempfile for website upgrade
-    website = tempfile.NamedTemporaryFile(delete=False)
+    website = tempfile.NamedTemporaryFile(delete=False, suffix=".html")
     path = website.name
 
     # Write initial website information
-    website.write(b"<html>\n<head>\n\t<title>Hello</title>\n<body>\nTEST\n</body>\n</html>")
+    website.write(website_template)
 
     # run cmd
     cmd_env = os.environ.copy()
@@ -266,6 +275,7 @@ def main():
         print('speed_download: {:.1f} KiB, speed_upload: {:.1f} KiB'.format(
             d['speed_download'] / 1024, d['speed_upload'] / 1024))
 
+    website.write(b"\n</body>\n</html>")
     webbrowser.open( path, new=2, autoraise=True)
 
 if __name__ == '__main__':
