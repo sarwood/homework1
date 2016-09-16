@@ -13,7 +13,7 @@ import json
 import sys
 import tempfile
 import subprocess
-
+import webbrowser
 
 __version__ = '1.1.3'
 
@@ -144,6 +144,13 @@ def main():
     headerf = tempfile.NamedTemporaryFile(delete=False)
     headerf.close()
 
+    # tempfile for website upgrade
+    website = tempfile.NamedTemporaryFile(delete=False)
+    path = website.name
+
+    # Write initial website information
+    website.write(b"<html>\n<head>\n\t<title>Hello</title>\n<body>\nTEST\n</body>\n</html>")
+
     # run cmd
     cmd_env = os.environ.copy()
     cmd_env.update(
@@ -259,6 +266,7 @@ def main():
         print('speed_download: {:.1f} KiB, speed_upload: {:.1f} KiB'.format(
             d['speed_download'] / 1024, d['speed_upload'] / 1024))
 
+    webbrowser.open( path, new=2, autoraise=True)
 
 if __name__ == '__main__':
     main()
