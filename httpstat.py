@@ -215,8 +215,14 @@ def main():
         if loop == 0:
             p1, p2 = tuple(line.split('/'))
             print(green(p1) + grayscale[14]('/') + cyan(p2))
+            website.write(b"<p>")
+            website.write(bytes(p1 + '/' + p2, 'ascii'))
+            website.write(b"</p>\n")
         else:
             pos = line.find(':')
+            website.write(b"<p>")
+            website.write(bytes(((line[:pos + 1]) + (line[pos + 1:])), 'ascii'))
+            website.write(b"</p>\n")
             print(grayscale[14](line[:pos + 1]) + cyan(line[pos + 1:]))
 
     print()
@@ -266,8 +272,8 @@ def main():
         b0003=fmtb(d['time_starttransfer']),
         b0004=fmtb(d['time_total']),
     )
-    print()
-    print(stat)
+    #print()
+    #print(stat)
 
     # speed, originally bytes per second
     show_speed = os.environ.get(ENV_SHOW_SPEED, 'false')
