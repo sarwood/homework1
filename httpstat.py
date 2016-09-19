@@ -14,6 +14,7 @@ import sys
 import tempfile
 import subprocess
 import webbrowser
+import plot_builder
 
 __version__ = '1.1.3'
 
@@ -275,6 +276,9 @@ def main():
         print('speed_download: {:.1f} KiB, speed_upload: {:.1f} KiB'.format(
             d['speed_download'] / 1024, d['speed_upload'] / 1024))
 
+    website.write(bytes(plot_builder.plot_div(d['range_dns'], d['range_connection'], d['range_ssl'], d['range_server'],
+        d['range_transfer'], d['time_namelookup'], d['time_connect'], d['time_pretransfer'], d['time_starttransfer'],
+        d['time_total']), 'ascii'))
     website.write(b"\n</body>\n</html>")
     webbrowser.open( path, new=2, autoraise=True)
 
