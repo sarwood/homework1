@@ -2,7 +2,15 @@
 
 Original httpstat README is below.
 
+Improved user interface added to httpstat!
+
+As you can see below, the output of httpstat is dynamically built into a webpage and displayed to the user. 
+Run httpstat as normal and a new browser tab will open to display your results!
 ![Homework1](Homework1.png)
+
+
+
+Original httpstat README
 
 curl statistics made simple.
 
