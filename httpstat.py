@@ -15,7 +15,8 @@ import tempfile
 import subprocess
 import webbrowser
 import plot_builder
-
+from plotly.tools import FigureFactory as FF
+import plotly
 __version__ = '1.1.3'
 
 
@@ -210,20 +211,20 @@ def main():
         headers = f.read().strip()
     # remove header file
     os.remove(headerf.name)
-
+    H = [0]
     for loop, line in enumerate(headers.split('\n')):
         if loop == 0:
-            p1, p2 = tuple(line.split('/'))
-            print(green(p1) + grayscale[14]('/') + cyan(p2))
-            website.write(b"<p>")
-            website.write(bytes(p1 + '/' + p2, 'ascii'))
-            website.write(b"</p>\n")
+            G= list(line.split('/'))
+            M=[G[0]]
+            N=[G[1]]
+         #   print(green(p1) + grayscale[14]('/') + cyan(p2))
         else:
-            pos = line.find(':')
-            website.write(b"<p>")
-            website.write(bytes(((line[:pos + 1]) + (line[pos + 1:])), 'ascii'))
-            website.write(b"</p>\n")
-            print(grayscale[14](line[:pos + 1]) + cyan(line[pos + 1:]))
+           # pos = line.find(':')
+            H.extend (line.split(': '))
+            #print(grayscale[14](line[:pos + 1]) + cyan(line[pos + 1:]))
+    for j in range(1,(len(H)+1)//2):
+        M.append (H[2*j-1])
+        N.append (H[2*j])
 
     print()
 
@@ -274,6 +275,7 @@ def main():
     )
     #print()
     #print(stat)
+    #print(Server)
 
     # speed, originally bytes per second
     show_speed = os.environ.get(ENV_SHOW_SPEED, 'false')
@@ -281,7 +283,16 @@ def main():
     if show_speed:
         print('speed_download: {:.1f} KiB, speed_upload: {:.1f} KiB'.format(
             d['speed_download'] / 1024, d['speed_upload'] / 1024))
-
+    #creat Table Martex
+    length=len(M)
+    Mat = [['object','content']]
+    Temp = [([ M[i], N[i] ]) for i in range (length)]
+    Mat.extend(Temp)
+        
+    Tb=FF.create_table(Mat)
+    Pt=plotly.offline.plot(Tb, show_link=False, include_plotlyjs=False, output_type='div')
+    website.write(bytes(Pt,'ascii'))
+    
     website.write(bytes(plot_builder.plot_div(d['range_dns'], d['range_connection'], d['range_ssl'], d['range_server'],
         d['range_transfer'], d['time_namelookup'], d['time_connect'], d['time_pretransfer'], d['time_starttransfer'],
         d['time_total']), 'ascii'))
