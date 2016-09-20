@@ -2,7 +2,7 @@
 
 Original httpstat README is below.
 
-![screenshot](homework1.png)
+![Homework1](Homework1.png)
 
 curl statistics made simple.
 
